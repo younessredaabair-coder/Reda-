@@ -1,2 +1,2 @@
 # Reda-
-Reda STORE for Morocco 
+index.html
