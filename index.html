@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>🛒 REDA STORE </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* CSS Styles */
+:root{
+    --bg: #f7f7f7; 
+    --card: #ffffff; 
+    --text: #1a1a1a; 
+    --accent: #007bff; /* تغيير اللون الأساسي إلى الأزرق لتباين أفضل */
+    --secondary-bg: #e9ecef; 
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+/* وضعية الظلام */
+.dark{
+    --bg: #1e1e1e;
+    --card: #2a2a2a;
+    --text: #f0f0f0;
+    --accent: #4da6ff; /* أزرق فاتح مائل للأبيض */
+    --secondary-bg: #383838;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Cairo', system-ui, sans-serif; 
+    background: var(--bg);
+    color: var(--text);
+    transition: background-color 0.4s, color 0.4s;
+}
+
+/* Header */
+header {
+    background: var(--accent);
+    color: var(--card); /* النص بلون البطاقة */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+header div {
+    display: flex;
+    align-items: center;
+}
+header button {
+    margin-left: 10px;
+    background: rgba(255, 255, 255, 0.2); /* زر شفاف في الهيدر */
+    color: var(--card);
+}
+
+/* Form Elements & Buttons */
+button, input[type=text], input[type=number] {
+    border: none;
+    border-radius: 25px; 
+    padding: 10px 15px;
+    margin: 5px 0;
+    font-family: 'Cairo', system-ui, sans-serif;
+    transition: all 0.3s ease; /* انتقالات سلسة */
+}
+button {
+    background: var(--accent);
+    color: var(--card);
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--secondary-bg);
+    background: var(--card); 
+    color: var(--text);
+}
+
+/* Layout */
+.container {
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 25px;
+    margin-top: 20px;
+}
+.section {
+    margin-top: 40px;
+    padding: 20px;
+    background: var(--secondary-bg);
+    border-radius: 18px; 
+    box-shadow: var(--shadow-light);
+}
+h3 {
+    border-bottom: 3px solid var(--accent); /* خط أثخن تحت العنوان */
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+/* Product Card Design */
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+.card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+.card img {
+    width: 100%;
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+.card h4 {
+    margin: 8px 0;
+    font-size: 1.2em;
+}
+.card p {
+    font-size: 1.1em;
+    color: var(--accent); 
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Cart & Wishlist Items */
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 8px 0;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: var(--card);
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+}
+
+/* Chat Styles */
+#chatBox {
+    height: 300px; 
+    overflow-y: scroll; 
+    border: 1px solid var(--secondary-bg); 
+    padding: 15px; 
+    border-radius: 12px; 
+    margin-bottom: 10px;
+    background: var(--card);
+}
+#chatBox p {margin: 5px 0;}
+#chatBox span {
+    padding: 10px 15px; 
+    border-radius: 20px;
+    display: inline-block; 
+    max-width: 85%;
+    font-size: 0.9em;
+}
+.client-msg {
+    background-color: var(--accent); 
+    color: white; 
+    border-bottom-right-radius: 4px;
+}
+.admin-msg {
+    background-color: var(--secondary-bg); 
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+}
+
+/* 💡 تحسين حقل إدخال الدردشة */
+.chat-input-container {
+    display: flex;
+    gap: 10px;
+}
+#chatInput {
+    flex-grow: 1;
+    margin: 0;
+    border-radius: 25px;
+    padding: 12px 18px;
+}
+.chat-input-container button {
+    width: 80px;
+    margin: 0;
+    padding: 12px;
+}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<header>
+ <h3 id="appTitle">🛒 REDA STORE v7</h3>
+ <div>
+  <button onclick="toggleDark()">🌙</button>
+  <span>
+    ❤️ <span id="wishCount">0</span>
+    🛒 <span id="cartCount">0</span>
+  </span>
+ </div>
+</header>
+
+<div class="container">
+    <div id="storeContent">
+        
+        <input type="text" placeholder="Search product…" oninput="search(this.value)" style="margin-bottom: 30px;">
+
+        <div class="products" id="products"></div>
+
+        <div class="section">
+            <h3>🧾 سلة المشتريات</h3>
+            <div id="cart"></div>
+            <strong>الإجمالي: $<span id="total">0</span></strong>
+        </div>
+
+        <div class="section">
+            <h3>💳 معلومات الطلب</h3>
+            <input id="name" type="text" placeholder="اسمك الكامل" required>
+            <input id="address" type="text" placeholder="عنوان التسليم بالتفصيل" required>
+            <button onclick="checkout()">تأكيد الطلب</button>
+        </div>
+
+        <div class="section">
+            <h3>❤️ قائمة الرغبات</h3>
+            <div id="wishlist"></div>
+        </div>
+
+        <div class="section">
+            <h3>💬 محادثة مباشرة مع الإدارة</h3>
+            <div id="chatBox">
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+                <button onclick="sendMessage()">إرسال</button>
+            </div>
+        </div>
+        </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 🔹 Firebase Config (كما هي)
+const firebaseConfig = {
+  apiKey: "AIzaSyA2YRNO-ySdPHkSomxt4FSCjClFbC3DZgo", 
+  authDomain: "e-commerce-324da.firebaseapp.com",
+  databaseURL: "https://e-commerce-324da-default-rtdb.firebaseio.com/", 
+  projectId: "e-commerce-324da",
+  storageBucket: "e-commerce-324da.appspot.com", 
+  messagingSenderId: "100919978230",
+  appId: "1:100919978230:web:7b64beb05f379d1759a4d7" 
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const $=id=>document.getElementById(id);
+
+let cart=[], wish=[];
+
+/* --- DEVICE TRACKING (استعادة Device ID) --- */
+
+function getChatId() {
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'Guest-' + Math.random().toString(16).slice(2) + Date.now();
+        localStorage.setItem('device_id', deviceId);
+        logVisitor(deviceId);
+    }
+    // التأكد من تسجيل الزيارة في كل مرة يتم فيها جلب الـ ID
+    logVisitor(deviceId);
+    return deviceId;
+}
+
+function logVisitor(id, email = "N/A") {
+    const visitData = {
+        deviceId: id,
+        email: email,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        status: "Online"
+    };
+    db.ref('visits/' + id).set(visitData).catch(e => console.error("Failed to log visitor:", e));
+}
+
+/* --- CORE STORE FUNCTIONS --- */
+
+function renderProducts(list) {
+    $("products").innerHTML = "";
+    if (!list) { $("products").innerHTML = "<p>لا توجد منتجات لعرضها حاليًا.</p>"; return; }
+    
+    const productsArray = Object.entries(list).map(([key, p]) => ({ id: key, ...p }));
+    productsArray.forEach(p => {
+        const isWished = wish.some(w => w.id === p.id);
+        const wishButtonText = isWished ? '❤️ Added' : '❤️';
+        $("products").innerHTML += `
+        <div class="card">
+        <img src="${p.img}" alt="${p.name}">
+        <h4>${p.name}</h4>
+        <p>$${p.price}</p>
+        <button onclick="addCart('${p.id}', '${p.name}', ${p.price})">أضف للسلة</button>
+        <button onclick="addWish('${p.id}', '${p.name}', ${p.price}, '${p.img}')">${wishButtonText}</button>
+        </div>`;
+    });
+}
+function addCart(id, name, price){
+    const existingItem = cart.find(x => x.id === id);
+    if (existingItem) { existingItem.q++; } else { cart.push({ id, name, price, q: 1 }); }
+    renderCart(); toast("تمت الإضافة للسلة");
+}
+function renderCart(){
+    let t=0,c=0; $("cart").innerHTML="";
+    cart.forEach((i,idx)=>{
+        const quantity = i.q || 1; t += i.price * quantity; c += quantity;
+        $("cart").innerHTML+=`<div class="item">${i.name} x${quantity} <button onclick="removeItemFromCart(${idx})">X</button></div>`;
+    });
+    $("total").innerText=t.toFixed(2); $("cartCount").innerText=c;
+}
+function removeItemFromCart(index){ cart.splice(index, 1); renderCart(); }
+function addWish(id, name, price, img){ 
+    if(!wish.some(w => w.id === id)) { 
+        wish.push({ id, name, price, img });
+        toast("تمت الإضافة للرغبات");
+    } else {
+        toast("المنتج موجود بالفعل");
+    }
+    renderWish(); 
+    // إعادة عرض المنتجات لتحديث زر الرغبات
+    db.ref('products').once('value').then(snapshot => { renderProducts(snapshot.val()); });
+}
+function renderWish(){
+    $("wishlist").innerHTML="";
+    wish.forEach((i,idx)=>{ $("wishlist").innerHTML+=`<div class="item">${i.name} <button onclick="removeItemFromWish(${idx})">X</button></div>`; });
+    $("wishCount").innerText=wish.length;
+}
+function removeItemFromWish(index){
+    wish.splice(index, 1); renderWish();
+    // إعادة عرض المنتجات لتحديث زر الرغبات
+    db.ref('products').once('value').then(snapshot => { renderProducts(snapshot.val()); });
+}
+function search(v){ 
+    db.ref('products').once('value').then(snapshot => {
+        const products = snapshot.val();
+        if (products) {
+            const filtered = Object.fromEntries(
+                Object.entries(products).filter(([key, p]) => p.name.toLowerCase().includes(v.toLowerCase()))
+            );
+            renderProducts(filtered);
+        }
+    });
+}
+
+/* CHECKOUT */
+function checkout(){
+ if(!cart.length) return toast("سلة المشتريات فارغة!");
+ 
+ const name=$("name").value, addr=$("address").value;
+ if (!name || !addr) return toast("الرجاء ملء الاسم والعنوان!");
+ 
+ const order = {
+    name, addr, 
+    items: cart.map(i => ({ id: i.id, name: i.name, qty: i.q || 1, price: i.price })), 
+    total: cart.reduce((s, i) => s + i.price * (i.q || 1), 0),
+    timestamp: new Date().toISOString(), 
+    userId: getChatId() 
+ };
+ db.ref("orders").push(order).then(()=>{
+     toast("تم وضع الطلب بنجاح! سيتم التواصل معك قريباً."); 
+     cart=[]; 
+     $("name").value = ""; $("address").value = ""; 
+     renderCart(); 
+   }).catch(e=>toast("فشل وضع الطلب: " + e.message));
+}
+
+/* --- CHAT SYSTEM FUNCTIONS (تم إصلاحها) --- */
+
+function sendMessage() {
+    const chatId = getChatId();
+    const message = $('chatInput').value.trim();
+    if (!message) return;
+
+    // 🛑 تم التأكد من أن مسار Firebase صحيح
+    const messageData = {
+        sender: "client",
+        text: message,
+        timestamp: new Date().toISOString()
+    };
+
+    // إرسال الرسالة إلى مسار المحادثة المحدد بالـ chatId
+    db.ref('chat_messages/' + chatId).push(messageData)
+        .then(() => {
+            $('chatInput').value = '';
+        })
+        .catch(e => toast("فشل إرسال الرسالة: " + e.message));
+}
+
+function watchChat() {
+    const chatId = getChatId();
+    const chatBox = $('chatBox');
+    
+    // مراقبة المحادثة الخاصة بالـ chatId
+    db.ref('chat_messages/' + chatId).on('value', snapshot => {
+        chatBox.innerHTML = '';
+        const messages = snapshot.val();
+        if (messages) {
+            // استخدام Object.entries و forEach لضمان ترتيب الرسائل
+            Object.entries(messages).forEach(([key, msg]) => {
+                const isClient = msg.sender !== 'admin';
+                const alignment = isClient ? 'right' : 'left';
+                const cssClass = isClient ? 'client-msg' : 'admin-msg';
+                const senderName = isClient ? 'أنت' : 'الإدارة';
+                
+                chatBox.innerHTML += `
+                    <p style="text-align: ${alignment};">
+                        <span class="${cssClass}">
+                            [${senderName}] ${msg.text}
+                        </span>
+                    </p>
+                `;
+            });
+        }
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+
+
+/* --- GENERAL & LOAD FUNCTIONS --- */
+function toggleDark(){ 
+    document.body.classList.toggle("dark"); 
+    localStorage.dark = document.body.classList.contains("dark"); 
+}
+function toast(t){ 
+    const toastElem = $("toast");
+    toastElem.innerText = t; 
+    toastElem.style.display = "block"; 
+    setTimeout(() => { toastElem.style.display = "none" }, 2500); /* إطالة مدة التوست قليلاً */
+}
+
+// دالة التحميل الرئيسية للمتجر
+function loadStore() {
+    
+    getChatId(); // تسجيل الزيارة والحصول على المعرف
+
+    // فحص حالة المتجر (مفتوح/مغلق)
+    db.ref('settings/store_status').once('value').then(snapshot => {
+        const status = snapshot.val();
+        
+        if (status === 'open') {
+            if (localStorage.dark === 'true') document.body.classList.add('dark');
+            
+            // تحميل المنتجات
+            db.ref('products').once('value').then(prodSnapshot => {
+                renderProducts(prodSnapshot.val());
+            }).catch(e => console.error("Failed to load products:", e));
+
+            renderCart();
+            renderWish(); 
+            watchChat(); // تشغيل المحادثة
+        } else {
+            // المتجر مغلق
+            $('storeContent').innerHTML = '<h1 style="color:red; text-align:center; padding: 50px;">المتجر مغلق حاليًا للصيانة. نعتذر!</h1>';
+        }
+    }).catch(e => {
+        $('storeContent').innerHTML = '<h1 style="color:red; text-align:center; padding: 50px;">خطأ في الاتصال بقاعدة البيانات.</h1>';
+        console.error("Firebase connection failed:", e);
+    });
+}
+
+window.onload = loadStore;
+</script>
+
+</body>
+</html>
+
